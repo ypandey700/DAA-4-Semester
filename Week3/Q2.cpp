@@ -1,41 +1,52 @@
-#include<iostream>
+#include <iostream>
 using namespace std;
-void selection_sort(int arr[],int n)
-{
-    int compare=0;
-    int shift=0;
-    int temp;
-    for(int i=0;i<n-1;i++)
-    {
-       int index=i;
-        for(int j=i+1;j<n;j++)
-        {
-               compare++;
-            if(arr[index]>arr[j])
-            {
-                index=j;
+
+void selectionSort(int arr[], int n, int &comparisons, int &swaps) {
+    comparisons = 0;
+    swaps = 0;
+
+    for (int i = 0; i < n - 1; i++) {
+        int minIndex = i;
+        for (int j = i + 1; j < n; j++) {
+            comparisons++; // Count comparisons
+            if (arr[j] < arr[minIndex]) {
+                minIndex = j;
             }
         }
-        if(i!=index){
-            temp=arr[i];
-            arr[i]=arr[index];
-            arr[index]=temp;
-            shift++;
+        if (minIndex != i) { // Swap only when necessary
+            swap(arr[i], arr[minIndex]);
+            swaps++; // Count swaps
         }
-            
     }
-    cout<<" sorted array is";
-    for(int i=0;i<n;i++)
-    {
-        cout<<arr[i];
-    }
-    cout<<endl;
-    cout<<"number of shifts"<<shift<<endl;
-    cout<<"number of compare"<<compare;
 }
-int main()
-{
-    int arr[10]={9,3,2,8,6,4,5,0,1,7};
-    int n=10;
-    selection_sort(arr,n);
+
+void printArray(int arr[], int n) {
+    for (int i = 0; i < n; i++) {
+        cout << arr[i] << " ";
+    }
+    cout << endl;
+}
+
+int main() {
+    int T;
+    cin >> T; // Read number of test cases
+
+    while (T--) {
+        int n;
+        cin >> n; // Read array size
+        int arr[n];
+
+        for (int i = 0; i < n; i++) {
+            cin >> arr[i]; // Read array elements
+        }
+
+        int comparisons = 0, swaps = 0;
+        selectionSort(arr, n, comparisons, swaps);
+
+        printArray(arr, n); // Print sorted array
+        cout << comparisons << endl; // Print total comparisons
+        cout << swaps << endl; // Print total swaps
+    }
+
+    return 0;
 }

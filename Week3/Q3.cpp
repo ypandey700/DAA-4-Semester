@@ -1,84 +1,22 @@
-#include<iostream>
-#include<vector>
+#include <iostream>
+#include <algorithm> // For sorting
 using namespace std;
-bool merge(int arr[],int start,int mid,int end)
-{
-int left=start;
-int right=mid+1;
-bool duplicate=false;
-vector<int>temp(end-start+1);
-int index=0;
-while(left<=mid&& right<=end)
-{
-       if(arr[left]<=arr[right])
-      {
-        temp[index]=arr[left];
-        index++;
-        left++;
-      }
-      else 
-      {
-        temp [index]=arr[right];
-        index++;
-        right++;
-      }
-}
-while(left<=mid)
-{
-    temp[index]=arr[left];
-    index++;
-    left++;
-}
-while(right<=end)
-{
-    temp[index]=arr[right];
-    index++;
-    right++;
-}
-index=0;
-while(start<=end)
-{
-    arr[start]=temp[index];
-    start++;
-    index++;
-}
-return duplicate;
-}
-void mergesort(int arr[],int start,int end)
-{
-    if(start==end)
-    {
-        return;
+
+bool hasDuplicates(int arr[], int n) {
+    sort(arr, arr + n); // Sorting the array
+    for (int i = 1; i < n; i++) {
+        if (arr[i] == arr[i - 1])
+            return true;
     }
-   int mid=start+(end-start)/2;
-    mergesort(arr,start,mid);
-    mergesort(arr,mid+1,end);
-   merge(arr,start,mid,end);
+    return false;
 }
-int main()
-{
-    int arr[11]={4,2,4,1,3,9,8,6,7,5,0};
-    mergesort(arr,0,10);
-    int a=0;
-    for(int i=0;i<10;i++)
-    {
-        if(arr[i]==arr[i+1])
-        {
-            cout<<"dupicate are present"<<endl;
-            break;
-        }
-        else {
-            a++;
-        }
-    }
-    if(a==0)
-    {
-        cout<<"duplicate are not present"<<endl;
-    }
-    cout<<"sorted array is "<<endl;
-    for(int i=0;i<10;i++)
-    {
-        cout<<arr[i];
-        
-    }
+
+// Driver function
+int main() {
+    int arr[] = {1, 2, 3, 4, 5, 2}; // Example array
+    int n = sizeof(arr) / sizeof(arr[0]);
+
+    cout << (hasDuplicates(arr, n) ? "YES" : "NO") << endl;
+
+    return 0;
 }

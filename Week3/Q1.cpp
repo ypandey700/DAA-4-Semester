@@ -4,37 +4,27 @@ using namespace std;
  {
     int compare=0;
     int shift=0;
-    int temp;
     for(int i=1;i<n;i++)
     {
-        for(int j=i;j>0;j--)
+        int j=i-1;
+        int key=arr[i];
+        while(j>=0 && arr[j]>key)
         {
             compare++;
-            if(arr[j]<arr[j-1])
-            {
-                temp=arr[j];
-                arr[j]=arr[j-1];
-                arr[j-1]=temp;
-                shift++;
-            }
-            else 
-            {
-                break;
-            }
+            arr[j+1]=arr[j];
+            shift++;
+            j--;
         }
+        arr[j+1]=key;
+        shift++;
+
     }
-    cout<<"sorted array is ";
-    for(int i=0;i<n;i++)
-    {
-        cout<<arr[i];
-    }
-    cout<<endl;
     cout<<"number of sifts are"<<shift<<endl;
 cout<<"number of compare"<<compare;
  }
 int main()
 {
-    int arr[10]={4,7,8,1,3,0,6,2,5,9};
-    int n=10;
+    int arr[] = {-23, 65, -31, 76, 46, 89, 45, 32};
+    int n = sizeof(arr) / sizeof(arr[0]);
     insertion_sort(arr,n);
 }

@@ -1,51 +1,75 @@
-#include<iostream>
-#include <cstdlib> 
-#include <ctime>
+#include <iostream>
+#include <cstdlib>  // For rand() function
+#include <ctime>    // For seeding random number generator
 using namespace std;
-int partition(int arr[],int start,int end)
-{
-      int pos=start;
-      int temp;
-    for(int i=start;i<end;i++)
-    {
-        if(arr[i]<=arr[end])
-        {
-            temp=arr[i];
-            arr[i]=arr[pos];
-            arr[pos]=temp;
-            pos++;
+
+int comparisons = 0, swaps = 0;
+
+int partition(int arr[], int si, int ei) {
+    // Select a random pivot and swap it with the first element
+    int randomIndex = si + rand() % (ei - si + 1);
+    swap(arr[si], arr[randomIndex]);
+    swaps++;
+
+    int pivot = arr[si];
+    int count = 0;
+
+    // Count elements smaller than or equal to pivot
+    for (int i = si + 1; i <= ei; i++) {
+        comparisons++;
+        if (arr[i] <= pivot) count++;
+    }
+
+    // Place pivot at its correct position
+    int pivotIndex = si + count;
+    swap(arr[pivotIndex], arr[si]);
+    swaps++;
+
+    // Rearranging elements to partition correctly
+    int i = si, j = ei;
+    while (i < pivotIndex && j > pivotIndex) {
+        comparisons++;
+        while (arr[i] <= pivot) {
+            i++;
+            comparisons++;
+        }
+        comparisons++;
+        while (arr[j] > pivot) {
+            j--;
+            comparisons++;
+        }
+
+        if (i < pivotIndex && j > pivotIndex) {
+            swap(arr[i], arr[j]);
+            swaps++;
+            i++;
+            j--;
         }
     }
-    temp=arr[pos];
-    arr[pos]=arr[end];
-    arr[end]=temp;
-    return pos;
+    return pivotIndex;
 }
-int randomPartition(int arr[], int start, int end) {
-    int randomIndex = start + rand() % (end - start + 1); 
-    swap(arr[randomIndex], arr[end]);  
-    return partition(arr, start, end);  
-}
-void quick_sort(int arr[],int start,int end)
-{
-    if(start>=end)
-    {
-        return;
-    }
-    int pivort=randomPartition(arr,start, end);
-    quick_sort(arr,start,pivort-1);
-    quick_sort(arr,pivort+1,end);
 
+void quickSort(int arr[], int si, int ei) {
+    if (si >= ei) return;
+    int pi = partition(arr, si, ei);
+    quickSort(arr, si, pi - 1);
+    quickSort(arr, pi + 1, ei);
 }
-int main()
-{
-    srand(time(0));
-    int arr[10]={9,8,6,7,4,1,2,3,5,0};
-    quick_sort(arr,0,9);
-    cout<<"sorted array";
-    for (int i = 0; i < 10; i++)
-    {
-        cout<<arr[i];
+
+int main() {
+    srand(time(0)); // Seed for random pivot selection
+
+    int arr[] = {4, 2, 4, 1, 3, 4, 5};
+    int n = sizeof(arr) / sizeof(arr[0]);
+
+    quickSort(arr, 0, n - 1);
+
+    cout << "Sorted Array: ";
+    for (int i = 0; i < n; i++) {
+        cout << arr[i] << " ";
     }
-    
+    cout << "\nComparisons: " << comparisons;
+    cout << "\nSwaps: " << swaps << endl;
+
+    return 0;
 }

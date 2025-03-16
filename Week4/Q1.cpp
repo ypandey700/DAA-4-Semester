@@ -1,73 +1,52 @@
-#include<iostream>
-#include<vector>
+#include <iostream>
 using namespace std;
-int compare=0;
-int inversion=0;
-void merge(int arr[],int start,int mid,int end)
-{
-int left=start;
-int right=mid+1;
-vector<int>temp(end-start+1);
-int index=0;
-while(left<=mid&& right<=end)
-{
-    compare++;
-      if(arr[left]<=arr[right])
-      {
-        temp[index]=arr[left];
-        index++;
-        left++;
 
-      }
-      else 
-      {
-        temp [index]=arr[right];
-        index++;
-        right++;
-        inversion=inversion+(mid-left+1);
-      }
-}
-while(left<=mid)
-{
-    temp[index]=arr[left];
-    index++;
-    left++;
-}
-while(right<=end)
-{
-    temp[index]=arr[right];
-    index++;
-    right++;
-}
-index=0;
-while(start<=end)
-{
-    arr[start]=temp[index];
-    start++;
-    index++;
-}
-}
-void mergesort(int arr[],int start,int end)
-{
-    if(start>=end)
-    {
-        return;
+int comparisons = 0, inversions = 0;
+
+void mergesorted(int arr[], int n, int a[], int n1, int b[], int n2) {
+    int i = 0, j = 0, k = 0;
+    while (i < n1 && j < n2) {
+        comparisons++; // Count each comparison
+        if (a[i] <= b[j]) {
+            arr[k++] = a[i++];
+        } else {
+            arr[k++] = b[j++];
+            inversions += (n1 - i); // All remaining elements in `a` are greater, so count inversions
+        }
     }
-   int mid=start+(end-start)/2;
-    mergesort(arr,start,mid);
-    mergesort(arr,mid+1,end);
-    merge(arr,start,mid,end);
+    while (i < n1) arr[k++] = a[i++];
+    while (j < n2) arr[k++] = b[j++];
 }
-int main()
-{
-    int arr[10]={23, 65, 21, 76, 46, 89, 45, 32};
-    mergesort(arr,0,7);
-    cout<<"sorted array is ";
-    for(int i=0;i<8;i++)
-    {
-        cout<<arr[i]<<" ";
+
+void mergeSort(int arr[], int n) {
+    if (n == 1) return;
+    
+    int n1 = n / 2;
+    int n2 = n - n1;
+    int a[n1], b[n2];
+
+    for (int i = 0; i < n1; i++) a[i] = arr[i];
+    for (int i = 0; i < n2; i++) b[i] = arr[i + n1];
+
+    mergeSort(a, n1);
+    mergeSort(b, n2);
+    mergesorted(arr, n, a, n1, b, n2);
+}
+
+int main() {
+    int T, n;
+    cin >> T; // Number of test cases
+    while (T--) {
+        cin >> n;
+        int arr[n];
+        for (int i = 0; i < n; i++) cin >> arr[i];
+
+        comparisons = 0;
+        inversions = 0;
+        mergeSort(arr, n);
+
+        for (int i = 0; i < n; i++) cout << arr[i] << " ";
+        cout << "\nComparisons: " << comparisons << ", Inversions: " << inversions << endl;
     }
-    cout<<endl;
-    cout<<"comparsion are"<<compare<<endl;
-    cout<<"inversion are "<<inversion;
+    return 0;
 }

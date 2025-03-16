@@ -1,32 +1,22 @@
 #include<iostream>
 using namespace std;
-void common(int arr[],int brr[],int n,int m)
+void common(int arr[],int n , int brr[],int m)
 {
-    int i=0;
-    int j=0;
-    int a=0;
-    while(i<n&&j<m)
+    int i=0,j=0;
+    bool flag =false;
+    while(i<n && j<m)
     {
         if(arr[i]==brr[j])
         {
-            cout<<" common element are "<<arr[i]<<endl;
+            flag=true;
+            cout<<arr[i]<<",";
             i++;
             j++;
-            a++;
         }
-        else if(arr[i]<brr[j])
-        {
-            i++;
-        }
-        else 
-        {
-            j++;
-        }
+        else if(arr[i]<brr[j]) i++;
+        else j++;
     }
-    if(a==0)
-    {
-        cout<<"no common element";
-    }
+    if(flag==false) cout<<"no common element";
 }
 int main()
 {
@@ -34,5 +24,5 @@ int main()
     int brr[9]={0,2,4,5,6,7,8,9,10};
     int n=6;
    int  m=9;
-    common(arr,brr,n,m);
+   common(arr,n,brr,m);
 }

@@ -1,33 +1,44 @@
 #include<iostream>
+#include<algorithm>
 using namespace std;
-void differnce(int arr[],int n,int key)
+int binary(int arr[],int n,int key)
 {
-    int count=0;
+    int lo=0;
+    int hi=n-1;
+    while(lo<=hi)
+    {
+        int mid=lo+(hi-lo)/2;
+        if(arr[mid]==key) return mid;
+        else if(arr[mid]<key) lo=mid+1;
+        else hi=mid-1;
+    }
+    return -1;
+}
+void sum(int arr[],int n)
+{ 
+    bool flag=false;
+   
     for(int i=0;i<n-1;i++)
     {
-        for(int j=0;j<n;j++)
+        for(int j=i+1;j<n;j++)
         {
-            if(arr[i]-arr[j]==key||arr[j]-arr[i]==key)
+            int diff=arr[j]-arr[i];
+            int k=binary(arr,n,diff);
+            
+            if(k!=-1) 
             {
-                count++;
+                cout<<i<<","<<j<<","<<k<<endl;
+                flag=true;
+            
             }
         }
+
     }
-    if(count==0)
-    {
-        cout<<"no pair present ";
-    }
-    else 
-    {
-        cout<<"no. of pairs are "<<count;
-    }
+    if(flag==false) cout<<"no such idex";
 }
 int main()
 {
-    int arr[]={1,2,3,4,5,6,7,8,9};
+    int arr[]={3,2,1};
     int n=sizeof(arr)/sizeof(arr[0]);
-    int key;
-    cout<<"enter the key between 1to9  ";
-    cin>>key;
-    differnce(arr,n,key);
+    sum(arr,n);
 }
